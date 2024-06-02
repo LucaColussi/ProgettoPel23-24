@@ -1,2 +1,2 @@
-#include "trie.hpp"  // It is forbidden to include other libraries!
+#include "../include/trie.hpp"  
 
