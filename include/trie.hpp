@@ -114,7 +114,7 @@ struct trie {
     void add_child(trie<T> const& c);
 
     /* getters */
-    double get_weight() const;
+    double get_weight() const; 
     T const* get_label() const;
     trie<T> const* get_parent() const;
     bag<trie<T>> const& get_children() const;
@@ -161,3 +161,4 @@ std::ostream& operator<<(std::ostream&, trie<T> const&);
 
 template <typename T>
 std::istream& operator>>(std::istream&, trie<T>&);
+
