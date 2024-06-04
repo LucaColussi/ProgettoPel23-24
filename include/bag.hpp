@@ -10,6 +10,10 @@ public:
     int getSize(){
         return this->children.size();
     }
+    void addChild(trie<T> const& c){
+        trie<T> child(c); // copy constructor, essendo che gli passo la c per valore
+        this->children.push_back(child);
+    }
     
 private:
     std::vector<trie<T>> children; 

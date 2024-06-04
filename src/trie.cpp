@@ -57,7 +57,18 @@ trie<T>* trie<T>::get_parent(){
 
 template <typename T>
 void trie<T>::add_child(trie<T> const& c){
-    this->m_c.
+    this->m_c.addChild(c);
 }
 
+template <typename T>
+trie<T>::trie(trie<T> const& c){
+    //lui fa una trie<T> che chiama this e 
+        this->m_p = c.m_p;
+        T* label = new T(*c.m_l);
+        this->m_l = label;
+        this->m_c = c.m_c;
+        this->m_w = c.m_w;
+    //infine ritorna this
+}
 
+//nodoPadre->add_child(nodoFiglio);

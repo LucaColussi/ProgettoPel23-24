@@ -155,7 +155,7 @@ private:
     bag<trie<T>> m_c;  // children
     double m_w;        // weight
 };
-
+    
 template <typename T>
 std::ostream& operator<<(std::ostream&, trie<T> const&);
 
