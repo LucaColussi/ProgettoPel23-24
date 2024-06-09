@@ -117,10 +117,10 @@ struct trie {
     double get_weight() const; 
     T const* get_label() const;
     trie<T> const* get_parent() const;
-    // bag<trie<T>> const& get_children() const;
+    bag<trie<T>> const& get_children() const;
     T* get_label();
     trie<T>* get_parent();
-    // bag<trie<T>>& get_children();
+    bag<trie<T>>& get_children();
 
     /* comparison */
     // bool operator==(trie<T> const&) const;

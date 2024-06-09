@@ -84,6 +84,24 @@ void trie<T>::add_child(trie<T> const& c){
 }
 
 template <typename T>
+bag<trie<T>>& trie<T>::get_children(){
+    if(this->m_c.getSize() == 0){
+        throw parser_exception("Can't get children cause it's a leaf");
+    } else{
+        return this->m_c;
+    }
+}
+
+template <typename T>
+bag<trie<T>> const& trie<T>::get_children() const{
+    if(this->m_c.getSize() == 0){
+        throw parser_exception("Can't get children cause it's a leaf");
+    } else{
+        return this->m_c;
+    }
+}
+
+template <typename T>
 trie<T>::trie(trie<T> const& c){ //copy constructor
     //lui fa una trie<T> che chiama this e 
         this->m_p = c.m_p;

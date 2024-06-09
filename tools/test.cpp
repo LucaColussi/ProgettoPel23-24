@@ -13,6 +13,7 @@ void testAddChild(){
         char * label = new char('a');
         child->set_label(label);
         node->add_child(*child);
+        node->get_children();
         assert(node->get_weight() == 0);
     }
     catch(const parser_exception& e)
