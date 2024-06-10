@@ -21,29 +21,31 @@
             T* label = new T(*c.m_l);
             this->m_l = label;
             this->m_c = c.m_c;
+            this->m_c.setAllParent(this);
             this->m_w = c.m_w;
         //infine ritorna this   
     }
 
-    template <typename T>
-    trie<T>::trie(trie<T>&& m){ // move constructor
-        this->m_c = m.m_c;
-        this->m_l = m.m_l;
-        this->m_p = m.m_p;
-        this->m_w = m.m_w;
-        m.m_l = nullptr;
-        m.m_p = nullptr;
-    }
+    // template <typename T>
+    // trie<T>::trie(trie<T>&& m){ // move constructor
+    //     this->m_c = m.m_c;
+    //     this->m_l = m.m_l;
+    //     this->m_p = m.m_p;
+    //     this->m_w = m.m_w;
+    //     m.m_l = nullptr;
+    //     m.m_p = nullptr;
+    // }
 
-    template <typename T>
-    trie<T>::~trie(){   // distruttore 
-        delete this->m_l;
-        if(this->m_c.getSize() != 0){
-            for(int i = 0; i < this->m_c.getSize(); i++){
-                delete this->m_c.children[i].m_l;
-            }
-        }
-    }
+    // template <typename T>
+    // trie<T>::~trie(){   // distruttore 
+    //     delete this->m_l;
+    //     if(this->m_c.getSize() != 0){
+    //         for(int i = 0; i < this->m_c.getSize(); i++){
+    //             delete this->m_c.children[i].m_l;
+    //         }
+    //     }
+    // }
+
     template <typename T>
     void trie<T>::set_weight(double w) {
         if(this->m_c.getSize() == 0){

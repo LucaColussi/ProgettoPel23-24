@@ -22,7 +22,39 @@ void testAddChild(){
     }
 }
 
+    void testCopyConstructor(){
+        trie<char> root; 
+        trie<char> firstChild(3.1);
+        firstChild.set_parent(&root);
+        char * label = new char('a');
+        firstChild.set_label(label);
+
+        trie<char> secondChild;
+        secondChild.set_parent(&root);
+        label = new char('b');
+        secondChild.set_label(label);
+
+        trie<char> thirdChild(2.9);
+        thirdChild.set_parent(&secondChild);
+        label = new char('c');
+        thirdChild.set_label(label);
+
+        secondChild.add_child(thirdChild);
+        root.add_child(firstChild);
+        root.add_child(secondChild);
+    }
+
 int main(){
-    testAddChild();
+    //testAddChild();
+    testCopyConstructor();
     return 0;
 }
+
+/*
+children = { //root
+    a 3.1 children = {},    // firstChild
+    b children = {          //secondChild
+        c 2.9 children = {}     //thirdChild
+  }
+} 
+*/

@@ -30,6 +30,11 @@ public:
             this->children.push_back(child);
         }
     }
+    void setAllParent(trie<T> * parent){
+        for(int i = 0; i < children.size(); i++){
+            this->children[i].set_parent(parent);
+        }
+    }
     
 private:
     std::vector<trie<T>> children; 
