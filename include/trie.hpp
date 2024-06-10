@@ -95,17 +95,17 @@ struct trie {
     // };
 
     /* constructors */
-    trie();
-    trie(double);
-    trie(trie<T> const&);
-    // trie(trie<T>&&);
+    trie(); // default constructor
+    trie(double);   // constructor with weight
+    trie(trie<T> const&); // copy constructor
+    trie(trie<T>&&); // move constructor
 
     /* destructor */
-    // ~trie();
+    ~trie();    // destructor
 
     /* assignment operators */
-    // trie<T>& operator=(trie<T> const&);
-    // trie<T>& operator=(trie<T>&&);
+    // trie<T>& operator=(trie<T> const&); // copy assignment
+    // trie<T>& operator=(trie<T>&&); // move assignment
 
     /* setters */
     void set_weight(double w);
