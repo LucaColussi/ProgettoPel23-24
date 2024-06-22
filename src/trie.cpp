@@ -36,15 +36,12 @@
     //     m.m_p = nullptr;
     // }
 
-    // template <typename T>
-    // trie<T>::~trie(){   // distruttore 
-    //     delete this->m_l;
-    //     if(this->m_c.getSize() != 0){
-    //         for(int i = 0; i < this->m_c.getSize(); i++){
-    //             delete this->m_c.children[i].m_l;
-    //         }
-    //     }
-    // }
+    template <typename T>
+    trie<T>::~trie(){   // distruttore
+        if(this->m_l != nullptr){
+                delete this->m_l;
+        }
+    }
 
     template <typename T>
     void trie<T>::set_weight(double w) {

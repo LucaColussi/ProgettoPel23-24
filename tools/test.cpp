@@ -44,17 +44,26 @@ void testAddChild(){
         root.add_child(secondChild);
     }
 
+    void tryEdgeCases(){
+        try{
+            trie<char> child;
+            trie<char> root;
+            child.set_parent(&root);    
+            char * label = new char('a');
+            child.set_label(label);
+            child.set_weight(3.1);
+            root.add_child(child);
+            
+        }
+            catch(const parser_exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+    }
+
 int main(){
+    tryEdgeCases();
     //testAddChild();
-    testCopyConstructor();
+    //testCopyConstructor();
     return 0;
 }
-
-/*
-children = { //root
-    a 3.1 children = {},    // firstChild
-    b children = {          //secondChild
-        c 2.9 children = {}     //thirdChild
-  }
-} 
-*/

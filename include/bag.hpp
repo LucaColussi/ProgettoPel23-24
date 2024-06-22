@@ -13,6 +13,12 @@ template <typename T>
 struct bag<trie<T>>{
 
 public:
+    ~bag<trie<T>>(){
+    }
+
+    bag<trie<T>>(){  
+    }
+    
     int getSize()const{
         return this->children.size();
     }
@@ -30,6 +36,7 @@ public:
             this->children.push_back(child);
         }
     }
+
     void setAllParent(trie<T> * parent){
         for(int i = 0; i < children.size(); i++){
             this->children[i].set_parent(parent);

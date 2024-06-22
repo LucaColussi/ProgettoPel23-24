@@ -101,7 +101,7 @@ struct trie {
     //trie(trie<T>&&); // move constructor
 
     /* destructor */
-    //~trie();    // destructor
+    ~trie();    // destructor
 
     /* assignment operators */
     // trie<T>& operator=(trie<T> const&); // copy assignment
