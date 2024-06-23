@@ -26,21 +26,25 @@
         //infine ritorna this   
     }
 
-    // template <typename T>
-    // trie<T>::trie(trie<T>&& m){ // move constructor
-    //     this->m_c = m.m_c;
-    //     this->m_l = m.m_l;
-    //     this->m_p = m.m_p;
-    //     this->m_w = m.m_w;
-    //     m.m_l = nullptr;
-    //     m.m_p = nullptr;
-    // }
+    template <typename T>
+    trie<T>::trie(trie<T>&& m){ // move constructor
+        //  forse devo fare move(m.m_c) e poi definire il move constructor di bag;
+        this->m_c = move(m.m_c);
+        this->m_l = m.m_l;
+        this->m_p = m.m_p;
+        this->m_w = m.m_w;
+        m.m_l = nullptr;
+        m.m_p = nullptr;
+    }
 
     template <typename T>
     trie<T>::~trie(){   // distruttore
         if(this->m_l != nullptr){
-                delete this->m_l;
+            delete this->m_l;
+            m_l = nullptr;
         }
+        this->m_w = 0;
+        this->m_p = nullptr;
     }
 
     template <typename T>

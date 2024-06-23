@@ -53,17 +53,17 @@ void testAddChild(){
             child.set_label(label);
             child.set_weight(3.1);
             root.add_child(child);
-            
         }
             catch(const parser_exception& e)
         {
+
             std::cerr << e.what() << '\n';
         }
     }
 
 int main(){
     tryEdgeCases();
-    //testAddChild();
-    //testCopyConstructor();
+    testAddChild();
+    testCopyConstructor();
     return 0;
 }
