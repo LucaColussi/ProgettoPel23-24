@@ -130,3 +130,32 @@
         }
     }
 
+    template <typename T>
+    trie<T>& trie<T>::operator=(trie<T> const& other) { // copy assignment
+        this->m_c = other.m_c;
+        this->m_c.setAllParent(this);
+        this->m_w = other.m_w;
+        return *this;
+    }
+
+    template <typename T>
+    trie<T>& trie<T>::operator=(trie<T>&& other) { // move assignment
+        this->m_c = move(other.m_c);
+        this->m_c.setAllParent(this);
+        this->m_w = other.m_w;
+        return *this;   
+    }
+
+    template <typename T>
+    bool trie<T>::operator==(trie<T> const& other) const {
+        if(this->m_c == other.m_c && this->m_w == other.m_w){
+            return true;
+        }
+        return false;
+    }
+
+    template <typename T>
+    bool trie<T>::operator!=(trie<T> const& other) const {
+        return !(*this == other);
+    }
+

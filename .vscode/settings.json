@@ -1,5 +1,17 @@
 {
     "files.associations": {
-        "vector": "cpp"
+        "*.embeddedhtml": "html",
+        "vector": "cpp",
+        "__locale": "cpp",
+        "__split_buffer": "cpp",
+        "bitset": "cpp",
+        "memory_resource": "cpp",
+        "ios": "cpp",
+        "istream": "cpp",
+        "locale": "cpp",
+        "new": "cpp",
+        "ostream": "cpp",
+        "streambuf": "cpp",
+        "typeinfo": "cpp"
     }
 }

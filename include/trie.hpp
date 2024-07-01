@@ -104,8 +104,8 @@ struct trie {
     ~trie();    // destructor
 
     /* assignment operators */
-    // trie<T>& operator=(trie<T> const&); // copy assignment
-    // trie<T>& operator=(trie<T>&&); // move assignment
+    trie<T>& operator=(trie<T> const&); // copy assignment
+    trie<T>& operator=(trie<T>&&); // move assignment
 
     /* setters */
     void set_weight(double w);
@@ -123,8 +123,8 @@ struct trie {
     bag<trie<T>>& get_children();
 
     /* comparison */
-    // bool operator==(trie<T> const&) const;
-    // bool operator!=(trie<T> const&) const;
+    bool operator==(trie<T> const&) const;
+    bool operator!=(trie<T> const&) const;
 
     // /* prefix-search */
     // trie<T>& operator[](std::vector<T> const&);
