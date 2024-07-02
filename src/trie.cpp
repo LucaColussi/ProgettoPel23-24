@@ -29,7 +29,7 @@
     template <typename T>
     trie<T>::trie(trie<T>&& m){ // move constructor
         //  forse devo fare move(m.m_c) e poi definire il move constructor di bag;
-        this->m_c = move(m.m_c);
+        this->m_c = std::move(m.m_c);
         this->m_l = m.m_l;
         this->m_p = m.m_p;
         this->m_w = m.m_w;
@@ -109,25 +109,20 @@
         if(c.get_parent() == nullptr){
             throw parser_exception("Can't add child cause hasn't used set_parent");
         }
+        if(this->m_c.hasLabel(c.get_label())){
+            throw parser_exception("Can't add child cause is already present an equal label");
+        }
         this->m_c.addChild(c);
     }
 
     template <typename T>
     bag<trie<T>>& trie<T>::get_children(){
-        if(this->m_c.getSize() == 0){
-            throw parser_exception("Can't get children cause it's a leaf");
-        } else{
             return this->m_c;
-        }
     }
 
     template <typename T>
     bag<trie<T>> const& trie<T>::get_children() const{
-        if(this->m_c.getSize() == 0){
-            throw parser_exception("Can't get children cause it's a leaf");
-        } else{
             return this->m_c;
-        }
     }
 
     template <typename T>
@@ -140,7 +135,7 @@
 
     template <typename T>
     trie<T>& trie<T>::operator=(trie<T>&& other) { // move assignment
-        this->m_c = move(other.m_c);
+        this->m_c = std::move(other.m_c);
         this->m_c.setAllParent(this);
         this->m_w = other.m_w;
         return *this;   
@@ -159,3 +154,106 @@
         return !(*this == other);
     }
 
+    string getNextWord(std::istream& stream, char limit){ 
+        char c;
+        string result;
+        do{
+            if(stream.eof() || stream.peek() == EOF){
+                throw parser_exception("unexpected end of file");
+            }
+            stream>>c;  //mette nel chaar carattere corrente e va avanti di uno
+            result.push_back(c);
+        }while(stream.peek() != ' ' && stream.peek() != '\t' && stream.peek() != '\n' && stream.peek() != limit);
+
+        return result;
+    }
+
+    template <typename T>
+    void R(std::istream& stream, trie<T>& t){
+        T label;
+        stream>>label;
+        if(stream.fail()) throw parser_exception("expected label, got something else");
+        trie<T> node;
+        T * l = new T(label);
+        node.set_parent(&t);
+        node.set_label(l);
+        
+        S(stream, node);
+
+        t.add_child(node);
+        char c;
+        stream>>c;
+        if(c == ','){
+            R(stream, t);
+        }
+        else{
+            stream.unget();
+        }
+    }
+
+    template <typename T>
+    void F(std::istream& stream, trie<T>& t){
+        if(getNextWord(stream, '{') != "=" ){
+            throw parser_exception("excepted '=' after children keyword, got something else");
+        }
+        char c;
+        stream>>c;
+        if(c != '{'){
+            throw parser_exception("excepted '{' after '=', got something else");
+        }
+        R(stream,t);
+
+        stream>>c;
+        if(c != '}'){
+            throw parser_exception("excepted '}' after '{', got something else");
+        }
+    }
+
+    template <typename T>
+    void H(std::istream& stream, trie<T>& t){
+        if(getNextWord(stream, '=') != "children" ){
+            throw parser_exception("excepted children keyword after weigth, got something else");
+        }
+        if(getNextWord(stream, '{') != "=" ){
+            throw parser_exception("excepted '=' after children keyword, got something else");
+        }
+        char c;
+        stream>>c;
+        if(c != '{'){
+            throw parser_exception("excepted '{' after '=', got something else");
+        }
+        stream>>c;
+        if(c != '}'){
+            throw parser_exception("excepted '}' after '{', got something else");
+        }
+    }
+
+
+    template <typename T>
+    void S(std::istream& stream, trie<T>& t){
+    
+    string word = getNextWord(stream, '=');
+        if(word == "children"){
+            F(stream, t);
+        }
+        else{
+            try{
+                double num = stod(word); // se non funziona throwa stod un exception
+                t.set_weight(num);
+            }
+             catch (std::invalid_argument&) {
+                // Se std::stod non riesce a convertire la stringa
+                throw parser_exception("expected a double as first argument, got something else");
+            }
+
+            H(stream, t);
+        }
+    }
+
+
+    template <typename T>
+    std::istream& operator>>(std::istream& stream, trie<T>& t){
+        S(stream, t);
+        return stream;
+    }
+     

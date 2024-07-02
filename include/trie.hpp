@@ -159,6 +159,6 @@ private:
 // template <typename T>
 // std::ostream& operator<<(std::ostream&, trie<T> const&);
 
-// template <typename T>
-// std::istream& operator>>(std::istream&, trie<T>&);
+template <typename T>
+std::istream& operator>>(std::istream&, trie<T>&);
 

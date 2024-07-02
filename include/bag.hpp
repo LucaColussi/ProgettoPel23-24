@@ -62,12 +62,12 @@ public:
     }
 
     bool operator==(bag<trie<T>> const& other) const {
-        if(other.getSize != this->getSize){
+        if(other.getSize() != this->getSize()){
             return false;
         }
         for(int i = 0; i < this->children.size(); i++){
-            if(this->children[i]->m_l != nullptr && other.children[i]->m_l != nullptr){ // possibilità di aggiungere piu casistiche nel caso andassero bene le label nullptr, in questo caso anche se entrambe nullptr quindi uguali da FALSE
-                if(this->children[i]->m_w != other.children[i]->m_w || *this->children[i]->m_l != *other.children[i]->m_l || this->children[i]->m_c != other.children[i]->m_c){
+            if(this->children[i]->get_label() != nullptr && other.children[i]->get_label() != nullptr){ // possibilità di aggiungere piu casistiche nel caso andassero bene le label nullptr, in questo caso anche se entrambe nullptr quindi uguali da FALSE
+                if(this->children[i]->get_weight() != other.children[i]->get_weight() || *this->children[i]->get_label() != *other.children[i]->get_label() || this->children[i]->get_children() != other.children[i]->get_children()){
                     return false;
                 }
             }
@@ -78,9 +78,22 @@ public:
         return true;
     }
 
+    bool operator!=(bag<trie<T>> const& other) const {
+        return !(*this == other);
+    }
+
     int getSize()const{     //get size of the children vector
         return this->children.size();
-    }   
+    }
+
+    bool hasLabel(const T * label){
+        for(int i = 0; i < this->children.size(); i++){
+            if(*this->children[i]->get_label() == *label){
+                return true;
+            }
+        }
+        return false;
+    }
 
     void addChild(trie<T> const& c){ //add child al vector
         trie<T> * child = new trie<T>(c); // copy constructor, essendo che gli passo la c per valore
