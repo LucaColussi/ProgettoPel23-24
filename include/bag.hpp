@@ -86,7 +86,7 @@ public:
         return this->children.size();
     }
 
-    bool hasLabel(const T * label){
+    bool hasLabel(const T * label){      //find if label already present
         for(int i = 0; i < this->children.size(); i++){
             if(*this->children[i]->get_label() == *label){
                 return true;
@@ -95,7 +95,7 @@ public:
         return false;
     }
 
-    trie<T> * getWithLabel(const T label) const {
+    trie<T> * getWithLabel(const T label) const {       //return trie whit same label
         for(int i = 0; i < this->children.size(); i++){
             if(*this->children[i]->get_label() == label){
                 return this->children[i];
@@ -106,6 +106,15 @@ public:
 
     trie<T> * get(int i){
         return children[i];
+    }
+
+    int findIndex(trie<T> * node){      //find at what index of the vector the child is
+        for(int i = 0; i < this->getSize; i++){
+            if(this->children[i] == node){
+                return i;
+            }
+        }
+    return -1;
     }
 
     void addChild(trie<T> const& c){ //add child al vector
@@ -130,9 +139,9 @@ public:
         }
     }
     
-    bool labelPresent(T * label){
+    
 
-    }
+
 private:
     std::vector<trie<T>*> children; 
 };
