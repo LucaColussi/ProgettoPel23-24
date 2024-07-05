@@ -108,6 +108,42 @@ void test_parsing_validation() {
    }
 }
 
+void test_prefix_search() {
+   try {
+      trie<char> t = load_trie<char>("trie_char1.tr");
+
+      vector<char> path = {'a', 'b', 'c'};
+      assert(t[path] == *t.get_children().get(0));
+
+      path = {'z'};
+      assert(t[path] == t);
+
+      path = {'z', 'b', 'e', 'c', 'b'};
+      assert(
+          t[path] ==
+          *t.get_children().get(1)->get_children().get(1)->get_children().get(
+              0));
+
+      const trie<char> t1 = load_trie<char>("trie_char1.tr");
+
+      path = {'a', 'b', 'c'};
+      assert(t1[path] == *t.get_children().get(0));
+
+      path = {'z'};
+      assert(t1[path] == t);
+
+      path = {'z', 'b', 'e', 'c', 'b'};
+      assert(
+          t1[path] ==
+          *t.get_children().get(1)->get_children().get(1)->get_children().get(
+              0));
+
+   } catch (const parser_exception& e) {
+      cout << e.what() << endl;
+      assert(false);
+   }
+}
+
 void testAddChild(){
     try
     {
@@ -219,6 +255,7 @@ void testAddChild(){
     }
 
 int main(){
+    test_prefix_search();
     test_parsing_validation();
     testOperatorEqual();
     tryEdgeCases();

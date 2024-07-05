@@ -256,4 +256,102 @@
         S(stream, t);
         return stream;
     }
-     
+
+    template <typename T>
+    trie<T>& trie<T>::operator[](std::vector<T> const& vec){
+        trie<T> * res = this;
+        for(int i = 0; i < vec.size(); i++){
+            if(res->m_c.getWithLabel(vec[i]) != nullptr){
+                res = res->m_c.getWithLabel(vec[i]);
+            }
+        }
+        return *res;
+    }
+
+    template <typename T>
+    trie<T> const& trie<T>::operator[](std::vector<T> const& vec) const {
+        const trie<T> * res = this;
+        for(int i = 0; i < vec.size(); i++){
+            if(res->m_c.getWithLabel(vec[i]) != nullptr){
+                res = res->m_c.getWithLabel(vec[i]);
+            }
+        }
+        return *res;
+    }
+
+    /* node iterators */
+    template <typename T>
+    trie<T>::node_iterator::node_iterator(trie<T>* start){
+        this->m_ptr = start;
+    }
+    template <typename T>
+    trie<T>::node_iterator::reference trie<T>::node_iterator::operator*() const{
+        return *this->m_ptr->m_l;
+    }
+
+    template <typename T>
+    trie<T>::node_iterator::pointer trie<T>::node_iterator::operator->() const{
+        return this->m_ptr->m_l;
+    }
+
+    template <typename T>
+    trie<T>::node_iterator& trie<T>::node_iterator::operator++(){
+        this->m_ptr = this->m_ptr->m_p;
+        return *this;
+    }
+
+    template <typename T>
+    trie<T>::node_iterator trie<T>::node_iterator::operator++(int){
+        node_iterator tmp = *this;
+        this->m_ptr = this->m_ptr->m_p;
+        return tmp;
+    }
+
+    template <typename T>
+    bool trie<T>::node_iterator::operator==(node_iterator const& other) const {
+        return (this->m_ptr == other.m_ptr);      
+    }
+
+    template <typename T>
+    bool trie<T>::node_iterator::operator!=(node_iterator const& other) const {
+        return !(*this == other);
+    }
+
+    /*const node iterators */
+    template <typename T>
+    trie<T>::const_node_iterator::const_node_iterator(trie<T> const* ptr){
+        this->m_ptr = ptr;
+    }
+    template <typename T>
+    trie<T>::const_node_iterator::reference trie<T>::const_node_iterator::operator*() const{
+        return *this->m_ptr->m_l;
+    }
+
+    template <typename T>
+    trie<T>::const_node_iterator::pointer trie<T>::const_node_iterator::operator->() const{
+        return this->m_ptr->m_l;
+    }
+
+    template <typename T>
+    trie<T>::const_node_iterator& trie<T>::const_node_iterator::operator++(){
+        this->m_ptr = this->m_ptr->m_p;
+        return *this;
+    }
+
+    template <typename T>
+    trie<T>::const_node_iterator trie<T>::const_node_iterator::operator++(int){
+        const_node_iterator tmp = *this;
+        this->m_ptr = this->m_ptr->m_p;
+        return tmp;
+    }
+
+    template <typename T>
+    bool trie<T>::const_node_iterator::operator==(const_node_iterator const& other) const {
+        return (this->m_ptr == other.m_ptr);      
+    }
+
+    template <typename T>
+    bool trie<T>::const_node_iterator::operator!=(const_node_iterator const& other) const {
+        return !(*this == other);
+    }
+    

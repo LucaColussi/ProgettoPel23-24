@@ -17,40 +17,40 @@ private:
 template <typename T>
 struct trie {
     /* node iterators */
-    // struct node_iterator {
-    //     using iterator_category = std::forward_iterator_tag;
-    //     using value_type = T;
-    //     using pointer = T*;
-    //     using reference = T&;
+    struct node_iterator {
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = T;
+        using pointer = T*;
+        using reference = T&;
 
-    //     node_iterator(trie<T>*);
-    //     reference operator*() const;
-    //     pointer operator->() const;
-    //     node_iterator& operator++();
-    //     node_iterator operator++(int);
-    //     bool operator==(node_iterator const&) const;
-    //     bool operator!=(node_iterator const&) const;
+        node_iterator(trie<T>*);
+        reference operator*() const;
+        pointer operator->() const;
+        node_iterator& operator++();
+        node_iterator operator++(int);
+        bool operator==(node_iterator const&) const;
+        bool operator!=(node_iterator const&) const;
 
-    // private:
-    //     trie<T>* m_ptr;
-    // };
-    // struct const_node_iterator {
-    //     using iterator_category = std::forward_iterator_tag;
-    //     using value_type = const T;
-    //     using pointer = T const*;
-    //     using reference = T const&;
+    private:
+        trie<T>* m_ptr;
+    };
+    struct const_node_iterator {
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = const T;
+        using pointer = T const*;
+        using reference = T const&;
 
-    //     const_node_iterator(trie<T> const* ptr);
-    //     reference operator*() const;
-    //     pointer operator->() const;
-    //     const_node_iterator& operator++();
-    //     const_node_iterator operator++(int);
-    //     bool operator==(const_node_iterator const&) const;
-    //     bool operator!=(const_node_iterator const&) const;
+        const_node_iterator(trie<T> const* ptr);
+        reference operator*() const;
+        pointer operator->() const;
+        const_node_iterator& operator++();
+        const_node_iterator operator++(int);
+        bool operator==(const_node_iterator const&) const;
+        bool operator!=(const_node_iterator const&) const;
 
-    // private:
-    //     trie<T> const* m_ptr;
-    // };
+    private:
+        trie<T> const* m_ptr;
+    };
 
     // /* leaf iterators */
     // struct leaf_iterator {
@@ -127,8 +127,8 @@ struct trie {
     bool operator!=(trie<T> const&) const;
 
     // /* prefix-search */
-    // trie<T>& operator[](std::vector<T> const&);
-    // trie<T> const& operator[](std::vector<T> const&) const;
+    trie<T>& operator[](std::vector<T> const&);
+    trie<T> const& operator[](std::vector<T> const&) const;
 
     // /* max-weight leaf */
     // trie<T>& max();

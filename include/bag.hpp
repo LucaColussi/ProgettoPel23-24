@@ -95,6 +95,19 @@ public:
         return false;
     }
 
+    trie<T> * getWithLabel(const T label) const {
+        for(int i = 0; i < this->children.size(); i++){
+            if(*this->children[i]->get_label() == label){
+                return this->children[i];
+            }
+        }
+        return nullptr;
+    }
+
+    trie<T> * get(int i){
+        return children[i];
+    }
+
     void addChild(trie<T> const& c){ //add child al vector
         trie<T> * child = new trie<T>(c); // copy constructor, essendo che gli passo la c per valore
         if(children.size() == 0){
@@ -117,6 +130,9 @@ public:
         }
     }
     
+    bool labelPresent(T * label){
+
+    }
 private:
     std::vector<trie<T>*> children; 
 };
