@@ -24,25 +24,25 @@ public:
     }
 
     bag<trie<T>>(bag<trie<T>> const& other){ // copy constructor
-        for(int i = 0 ; i < other.children.size(); i++){
+        for(int i = 0 ; i < (int)other.children.size(); i++){
             trie<T> * add = new trie<T>(*other.children[i]);
             this->children.push_back(add);
         }
     }
     
     bag<trie<T>>(bag<trie<T>>&& other){ // move constructor
-        for(int i = 0; i < other.children.size(); i++){
+        for(int i = 0; i < (int)other.children.size(); i++){
             this->children.push_back(other.children[i]);
         }
         other.children.clear();
     }
 
     bag<trie<T>>& operator=(bag<trie<T>>&& other){  //move assignment
-        for(int i = 0; i < this->children.size(); i++){
+        for(int i = 0; i < (int)this->children.size(); i++){
             delete this->children[i];
         }
         this->children.clear();
-        for(int i = 0 ; i < other.children.size(); i++){
+        for(int i = 0 ; i < (int)other.children.size(); i++){
             this->children.push_back(other.children[i]);
         }
         other.children.clear();
@@ -50,11 +50,11 @@ public:
     }
 
     bag<trie<T>>& operator=(bag<trie<T>> const& other) { // copy assignment
-        for(int i = 0; i < this->children.size(); i++){
+        for(int i = 0; i < (int)this->children.size(); i++){
             delete this->children[i];
         }
         this->children.clear();
-        for(int i = 0 ; i < other.children.size(); i++){
+        for(int i = 0 ; i < (int)other.children.size(); i++){
             trie<T> * add = new trie<T>(*other.children[i]);
             this->children.push_back(add);
         }
@@ -65,7 +65,7 @@ public:
         if(other.getSize() != this->getSize()){
             return false;
         }
-        for(int i = 0; i < this->children.size(); i++){
+        for(int i = 0; i < (int)this->children.size(); i++){
             if(this->children[i]->get_label() != nullptr && other.children[i]->get_label() != nullptr){ // possibilità di aggiungere piu casistiche nel caso andassero bene le label nullptr, in questo caso anche se entrambe nullptr quindi uguali da FALSE
                 if(this->children[i]->get_weight() != other.children[i]->get_weight() || *this->children[i]->get_label() != *other.children[i]->get_label() || this->children[i]->get_children() != other.children[i]->get_children()){
                     return false;
@@ -87,7 +87,7 @@ public:
     }
 
     bool hasLabel(const T * label){      //find if label already present
-        for(int i = 0; i < this->children.size(); i++){
+        for(int i = 0; i < (int)this->children.size(); i++){
             if(*this->children[i]->get_label() == *label){
                 return true;
             }
@@ -96,7 +96,7 @@ public:
     }
 
     trie<T> * getWithLabel(const T label) const {       //return trie whit same label
-        for(int i = 0; i < this->children.size(); i++){
+        for(int i = 0; i < (int)this->children.size(); i++){
             if(*this->children[i]->get_label() == label){
                 return this->children[i];
             }
@@ -109,7 +109,7 @@ public:
     }
 
     int findIndex(trie<T> const * node) const {      //find at what index of the vector the child is
-        for(int i = 0; i < this->getSize(); i++){
+        for(int i = 0; i < (int)this->getSize(); i++){
             if(this->children[i] == node){
                 return i;
             }
@@ -123,7 +123,7 @@ public:
             this->children.push_back(child);
         }
         else{
-            for(int i = 0; i < children.size(); i++){
+            for(int i = 0; i < (int)children.size(); i++){
                 if(*child->get_label() < *children[i]->get_label()){
                     this->children.insert(this->children.begin() + i, child);
                     return;
@@ -134,7 +134,7 @@ public:
     }
 
     void setAllParent(trie<T> * parent){
-        for(int i = 0; i < children.size(); i++){
+        for(int i = 0; i < (int)children.size(); i++){
             this->children[i]->set_parent(parent);
         }
     }
@@ -157,9 +157,9 @@ public:
             return this->m_ptr;
         }
         children_iterator& operator++(){
-            for(int i = 0; i < children.size(); i++){
+            for(int i = 0; i < (int)children.size(); i++){
                 if(children[i] == this->m_ptr){
-                    if(i != children.size() -1){
+                    if(i != (int)children.size() -1){
                         this->m_ptr = children[i+1];
                         break;
                     } else{
@@ -172,9 +172,9 @@ public:
         }
         children_iterator operator++(int){
             children_iterator tmp = *this;
-            for(int i = 0; i < children.size(); i++){
+            for(int i = 0; i < (int)children.size(); i++){
                 if(children[i] == this->m_ptr){
-                    if(i != children.size() -1){
+                    if(i != (int)children.size() -1){
                         this->m_ptr = children[i+1];
                         break;
                     } else{
@@ -218,9 +218,9 @@ public:
             return this->m_ptr;
         }
         const_children_iterator& operator++(){
-            for(int i = 0; i < children.size(); i++){
+            for(int i = 0; i < (int)children.size(); i++){
                 if(children[i] == this->m_ptr){
-                    if(i != children.size() -1){
+                    if(i != (int)children.size() -1){
                         this->m_ptr = children[i+1];
                         break;
                     } else{
@@ -233,9 +233,9 @@ public:
         }
         const_children_iterator operator++(int){
             const_children_iterator tmp = *this;
-            for(int i = 0; i < children.size(); i++){
+            for(int i = 0; i < (int)children.size(); i++){
                 if(children[i] == this->m_ptr){
-                    if(i != children.size() -1){
+                    if(i != (int)children.size() -1){
                         this->m_ptr = children[i+1];
                         break;
                     } else{

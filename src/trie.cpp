@@ -264,7 +264,7 @@
     template <typename T>
     trie<T>& trie<T>::operator[](std::vector<T> const& vec){
         trie<T> * res = this;
-        for(int i = 0; i < vec.size(); i++){
+        for(int i = 0; i < (int)vec.size(); i++){
             if(res->m_c.getWithLabel(vec[i]) != nullptr){
                 res = res->m_c.getWithLabel(vec[i]);
             }
@@ -275,7 +275,7 @@
     template <typename T>
     trie<T> const& trie<T>::operator[](std::vector<T> const& vec) const {
         const trie<T> * res = this;
-        for(int i = 0; i < vec.size(); i++){
+        for(int i = 0; i < (int)vec.size(); i++){
             if(res->m_c.getWithLabel(vec[i]) != nullptr){
                 res = res->m_c.getWithLabel(vec[i]);
             }
