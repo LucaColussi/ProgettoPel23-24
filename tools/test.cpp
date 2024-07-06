@@ -468,6 +468,21 @@ void test_const_bag_iterator() {
    }
 }
 
+void test_max_function() {
+   try {
+      trie<char> t = load_trie<char>("trie_char5.tr");
+      assert(t.max() == *t.get_children().get(1));
+
+      trie<char> childNode = *t.get_children().get(0);
+      assert(childNode.max() ==
+             *childNode.get_children().get(0)->get_children().get(1));
+
+   } catch (const parser_exception& e) {
+      cout << e.what() << endl;
+      assert(false);
+   }
+}
+
 int main(){
     test_bag_iterator();
     test_const_bag_iterator();
@@ -477,6 +492,7 @@ int main(){
     test_const_leaf_iterator();
     test_prefix_search();
     test_parsing_validation();
+    test_max_function();
     // testOperatorEqual();
     // tryEdgeCases();
     // testAddChild();

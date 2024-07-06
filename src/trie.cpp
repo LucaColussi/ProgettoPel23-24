@@ -418,7 +418,7 @@
 
     template <typename T>
     bool trie<T>::leaf_iterator::operator!=(leaf_iterator const& other) const{
-        return !(this == other);
+        return !(*this == other);
     }
     
     template <typename T>
@@ -546,4 +546,26 @@
         trie<T> const * tmp = findNextLeaf(this);
         const_leaf_iterator ret(tmp);
         return ret;
+    }
+
+    template <typename T>
+    trie<T>& trie<T>::max(){
+        auto max = this->begin();
+        for(auto it = this->begin(); it != this->end(); it++){
+            if(it.get_leaf().get_weight() > max.get_leaf().get_weight()){
+                max = it; 
+            }
+        }
+        return max.get_leaf();
+    }
+
+    template <typename T>
+    const trie<T>& trie<T>::max() const {
+        auto max = this->begin();
+        for(auto it = this->begin(); it != this->end(); it++){
+            if(it.get_leaf().get_weight() > max.get_leaf().get_weight()){
+                max = it; 
+            }
+        }
+        return max.get_leaf();
     }

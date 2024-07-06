@@ -131,8 +131,8 @@ struct trie {
     trie<T> const& operator[](std::vector<T> const&) const;
 
     // /* max-weight leaf */
-    // trie<T>& max();
-    // trie<T> const& max() const;
+    trie<T>& max();
+    trie<T> const& max() const;
 
     // /* methods to return iterators */
     leaf_iterator begin();
