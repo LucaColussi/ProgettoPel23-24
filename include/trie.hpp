@@ -135,12 +135,12 @@ struct trie {
     // trie<T> const& max() const;
 
     // /* methods to return iterators */
-    // leaf_iterator begin();
-    // leaf_iterator end();
-    // node_iterator root();
-    // const_leaf_iterator begin() const;
-    // const_leaf_iterator end() const;
-    // const_node_iterator root() const;
+    leaf_iterator begin();
+    leaf_iterator end();
+    node_iterator root();
+    const_leaf_iterator begin() const;
+    const_leaf_iterator end() const;
+    const_node_iterator root() const;
 
     // /* facultative: union */
     // trie<T> operator+(trie<T> const&) const;

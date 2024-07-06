@@ -360,8 +360,8 @@
     template <typename T>
     trie<T> * findLeaf(trie<T> * start){
         if(start == nullptr) return nullptr;
-        while(start->get_children.getSize() != 0){
-            start = start->get_children.get(0);
+        while(start->get_children().getSize() != 0){
+            start = start->get_children().get(0);
         }
         return start;
     }
@@ -371,12 +371,12 @@
         if(node->get_parent() == nullptr) return nullptr;
         int i = node->get_parent()->get_children().findIndex(node);
 
-        i++;
+        i++;    // se non ha fratelli a destra
         if(i > node->get_parent()->get_children().getSize() - 1){       //size = 2 - 1   i = 1
             return findNextLeaf(node->get_parent());
         }
-        
-        return findLeaf(node->get_parent()->get_children().get(i));
+        //gli passo il fratello a destra
+        return findLeaf(node->get_parent()->get_children().get(i)); 
     }
 
     template <typename T>
@@ -432,8 +432,8 @@
     template <typename T>
     trie<T> const * findLeaf(trie<T> const * start){
         if(start == nullptr) return nullptr;
-        while(start->get_children.getSize() != 0){
-            start = start->get_children.get(0);
+        while(start->get_children().getSize() != 0){
+            start = start->get_children().get(0);
         }
         return start;
     }
@@ -486,7 +486,7 @@
 
     template <typename T>
     bool trie<T>::const_leaf_iterator::operator!=(const_leaf_iterator const& other) const{
-        return !(this == other);
+        return !(*this == other);
     }
     
     template <typename T>
@@ -500,5 +500,46 @@
     }
 
 
+    template <typename T>   
+    typename trie<T>::leaf_iterator trie<T>::begin(){
+        return leaf_iterator(this);
+    }
 
+    template <typename T>   
+    typename trie<T>::const_leaf_iterator trie<T>::begin() const{
+        return const_leaf_iterator(this);
+    }
 
+    template <typename T>   
+    typename trie<T>::node_iterator trie<T>::root(){
+        trie<T> * tmp = this;
+        while(tmp->get_parent() != nullptr){
+            tmp = tmp->get_parent();
+        }
+        node_iterator ret(tmp);
+        return ret;
+    }
+
+    template <typename T>   
+    typename trie<T>::const_node_iterator trie<T>::root() const{
+        trie<T> const * tmp = this;
+        while(tmp->get_parent() != nullptr){
+            tmp = tmp->get_parent();
+        }
+        const_node_iterator ret(tmp);
+        return ret;
+    }
+
+    template <typename T>
+    typename trie<T>::leaf_iterator trie<T>::end(){ 
+        trie<T> * tmp = findNextLeaf(this);
+        leaf_iterator ret(tmp);
+        return ret;
+    }
+
+    template <typename T>
+    typename trie<T>::const_leaf_iterator trie<T>::end() const { 
+        trie<T> const * tmp = findNextLeaf(this);
+        const_leaf_iterator ret(tmp);
+        return ret;
+    }

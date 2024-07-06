@@ -104,12 +104,12 @@ public:
         return nullptr;
     }
 
-    trie<T> * get(int i){
+    trie<T> * get(int i) const{
         return children[i];
     }
 
-    int findIndex(trie<T> * node){      //find at what index of the vector the child is
-        for(int i = 0; i < this->getSize; i++){
+    int findIndex(trie<T> const * node) const {      //find at what index of the vector the child is
+        for(int i = 0; i < this->getSize(); i++){
             if(this->children[i] == node){
                 return i;
             }
