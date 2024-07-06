@@ -483,6 +483,16 @@ void test_max_function() {
    }
 }
 
+void test_ostream() {
+   try {
+      trie<char> t = load_trie<char>("trie_char1.tr");
+      cout << t;
+   } catch (const parser_exception& e) {
+      cout << e.what() << endl;
+      assert(false);
+   }
+}
+
 int main(){
     test_bag_iterator();
     test_const_bag_iterator();
@@ -493,6 +503,7 @@ int main(){
     test_prefix_search();
     test_parsing_validation();
     test_max_function();
+    test_ostream();
     // testOperatorEqual();
     // tryEdgeCases();
     // testAddChild();

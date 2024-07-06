@@ -569,3 +569,32 @@
         }
         return max.get_leaf();
     }
+
+    template <typename T>
+    void printTrie(std::ostream& stream, trie<T> const& root){
+        if(root.get_parent() != nullptr){
+                stream<<*root.get_label()<<" ";
+            }
+        if(root.get_children().getSize() == 0){
+            stream<<root.get_weight();
+            stream<<" children = {}";
+        }
+        else{
+            stream<<"children = {";
+            for(auto it = root.get_children().begin(); it != root.get_children().end(); it++){
+                printTrie(stream, *it);
+                auto tmp = it;
+                tmp++;
+                if(tmp != root.get_children().end()){
+                    stream<<",";
+                }
+            }
+            stream<<"}";
+        }
+    }
+
+    template <typename T>
+    std::ostream& operator<<(std::ostream& stream, trie<T> const& root){
+        printTrie(stream, root);
+        return stream;
+    }

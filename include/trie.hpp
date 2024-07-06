@@ -156,8 +156,8 @@ private:
     double m_w;        // weight
 };
     
-// template <typename T>
-// std::ostream& operator<<(std::ostream&, trie<T> const&);
+template <typename T>
+std::ostream& operator<<(std::ostream&, trie<T> const&);
 
 template <typename T>
 std::istream& operator>>(std::istream&, trie<T>&);
