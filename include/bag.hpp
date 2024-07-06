@@ -140,8 +140,153 @@ public:
     }
     
     
+    struct children_iterator {
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = trie<T>;
+        using pointer = trie<T>*;
+        using reference = trie<T>&;
 
+        children_iterator(trie<T>* tmp, std::vector<trie<T>*> childrenVec){
+            this->m_ptr = tmp;
+            this->children = childrenVec;
+        }
+        reference operator*() const{
+            return *this->m_ptr;
+        }
+        pointer operator->() const{
+            return this->m_ptr;
+        }
+        children_iterator& operator++(){
+            for(int i = 0; i < children.size(); i++){
+                if(children[i] == this->m_ptr){
+                    if(i != children.size() -1){
+                        this->m_ptr = children[i+1];
+                        break;
+                    } else{
+                        this->m_ptr = nullptr;
+                        break;
+                    }
+                } 
+            }
+            return *this;
+        }
+        children_iterator operator++(int){
+            children_iterator tmp = *this;
+            for(int i = 0; i < children.size(); i++){
+                if(children[i] == this->m_ptr){
+                    if(i != children.size() -1){
+                        this->m_ptr = children[i+1];
+                        break;
+                    } else{
+                        this->m_ptr = nullptr;
+                        break;
+                    }
+                } 
+            }
+            return tmp;
+        }
+        bool operator==(children_iterator const& other) const{
+            if(this->m_ptr == other.m_ptr){
+                return true;
+            }
+            return false;
+        }
+        bool operator!=(children_iterator const& other) const{
+            return !(*this == other);
+        }
 
+    private:
+        trie<T>* m_ptr;
+        std::vector<trie<T>*> children; 
+
+    };
+
+        struct const_children_iterator {
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = const trie<T>;
+        using pointer = const trie<T>*;
+        using reference = const trie<T>&;
+
+        const_children_iterator(trie<T>* const tmp, std::vector<trie<T>*> childrenVec){
+            this->m_ptr = tmp;
+            this->children = childrenVec;
+        }
+        reference operator*() const{
+            return *this->m_ptr;
+        }
+        pointer operator->() const{
+            return this->m_ptr;
+        }
+        const_children_iterator& operator++(){
+            for(int i = 0; i < children.size(); i++){
+                if(children[i] == this->m_ptr){
+                    if(i != children.size() -1){
+                        this->m_ptr = children[i+1];
+                        break;
+                    } else{
+                        this->m_ptr = nullptr;
+                        break;
+                    }
+                } 
+            }
+            return *this;
+        }
+        const_children_iterator operator++(int){
+            const_children_iterator tmp = *this;
+            for(int i = 0; i < children.size(); i++){
+                if(children[i] == this->m_ptr){
+                    if(i != children.size() -1){
+                        this->m_ptr = children[i+1];
+                        break;
+                    } else{
+                        this->m_ptr = nullptr;
+                        break;
+                    }
+                } 
+            }
+            return tmp;
+        }
+        bool operator==(const_children_iterator const& other) const{
+            if(this->m_ptr == other.m_ptr){
+                return true;
+            }
+            return false;
+        }
+        bool operator!=(const_children_iterator const& other) const{
+            return !(*this == other);
+        }
+
+    private:
+        const trie<T>* m_ptr;
+        std::vector<trie<T>*> children; 
+
+    };
+
+    children_iterator begin(){
+        if(this->children.size() != 0){
+            return children_iterator(this->children[0], this->children);
+        }
+        else{
+            return children_iterator(nullptr, this->children);
+        }
+    }
+    children_iterator end(){
+        children_iterator ret(nullptr, this->children);
+        return ret;
+    }
+
+    const_children_iterator begin() const {
+        if(this->children.size() != 0){
+            return const_children_iterator(this->children[0], this->children);
+        }
+        else{
+            return const_children_iterator(nullptr, this->children);
+        }
+    }
+    const_children_iterator end() const {
+        const_children_iterator ret(nullptr, this->children);
+        return ret;
+    }
 private:
     std::vector<trie<T>*> children; 
 };

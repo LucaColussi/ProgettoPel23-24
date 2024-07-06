@@ -67,12 +67,17 @@
 
     template <typename T>
     void trie<T>::set_label(T* l) {
-        if(this->m_p != nullptr){
-            this->m_l = l;
+        if(this->m_l != nullptr){
+            delete this->m_l;
         }
-        else{
-            throw parser_exception("Can't set label cause hasn't a parent");
+        T * label;
+        if(l == nullptr) {
+            label = nullptr;
+        } else{
+            label = new T(*l);
         }
+        this->m_l = label;
+
     }
     template <typename T>
     T const* trie<T>::get_label() const{
@@ -174,9 +179,8 @@
         stream>>label;
         if(stream.fail()) throw parser_exception("expected label, got something else");
         trie<T> node;
-        T * l = new T(label);
         node.set_parent(&t);
-        node.set_label(l);
+        node.set_label(&label);
         
         S(stream, node);
 

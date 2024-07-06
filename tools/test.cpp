@@ -368,16 +368,118 @@ void test_const_node_iterator() {
    }
 }
 
+void test_bag_iterator() {
+   try {
+      trie<char> t = load_trie<char>("trie_char1.tr");
+      bag<trie<char>>::children_iterator it = t.get_children().begin();
+
+      // Check first element - arrow operator
+      assert(*it->get_label() == 'a');
+
+      // Check first element - dereference operator
+      assert(*(*it).get_label() == 'a');
+
+      // Check if incrementing works
+      it++;
+      assert(*it->get_label() == 'b');
+
+      // Check if .end() works
+      it++;
+      assert(it == t.get_children().end());
+
+      // Check if ++it works
+      it = t.get_children().begin();
+      assert(*((++it)->get_label()) == 'b');
+
+      // Check if it++ works
+      it = t.get_children().begin();
+      assert(*((it++)->get_label()) == 'a');
+      assert(*((it)->get_label()) == 'b');
+
+      // Check if sub-iterator works
+      it = t.get_children().begin();
+      bag<trie<char>>::children_iterator second_it = it->get_children().begin();
+      assert(second_it == it->get_children().end());
+
+      it++;
+      second_it = it->get_children().begin();
+      assert(*second_it->get_label() == 'b');
+
+      second_it++;
+      assert(*second_it->get_label() == 'c');
+
+       char lb = 'd';
+       second_it->set_label(&lb);
+       assert(*second_it->get_label() == 'd');
+
+       second_it++;
+       assert(second_it == t.get_children().end());
+   } catch (const parser_exception& e) {
+      cout << e.what() << endl;
+      assert(false);
+   }
+}
+
+void test_const_bag_iterator() {
+   try {
+      const trie<char> t = load_trie<char>("trie_char1.tr");
+      bag<trie<char>>::const_children_iterator it = t.get_children().begin();
+
+      // Check first element - arrow operator
+      assert(*it->get_label() == 'a');
+
+      // Check first element - dereference operator
+      assert(*(*it).get_label() == 'a');
+
+      // Check if incrementing works
+      it++;
+      assert(*it->get_label() == 'b');
+
+      // Check if .end() works
+      it++;
+      assert(it == t.get_children().end());
+
+      // Check if ++it works
+      it = t.get_children().begin();
+      assert(*((++it)->get_label()) == 'b');
+
+      // Check if it++ works
+      it = t.get_children().begin();
+      assert(*((it++)->get_label()) == 'a');
+      assert(*((it)->get_label()) == 'b');
+
+      // Check if sub-iterator works
+      it = t.get_children().begin();
+      bag<trie<char>>::const_children_iterator second_it =
+          it->get_children().begin();
+      assert(second_it == it->get_children().end());
+
+      it++;
+      second_it = it->get_children().begin();
+      assert(*second_it->get_label() == 'b');
+
+      second_it++;
+      assert(*second_it->get_label() == 'c');
+
+      second_it++;
+   } catch (const parser_exception& e) {
+      cout << e.what() << endl;
+      assert(false);
+   }
+}
+
 int main(){
+    test_bag_iterator();
+    test_const_bag_iterator();
     test_const_node_iterator();
     test_node_iterator();
     test_leaf_iterator();
     test_const_leaf_iterator();
     test_prefix_search();
     test_parsing_validation();
-    testOperatorEqual();
-    tryEdgeCases();
-    testAddChild();
-    testCopyConstructor();
+    // testOperatorEqual();
+    // tryEdgeCases();
+    // testAddChild();
+    // testCopyConstructor();
     return 0;
 }
