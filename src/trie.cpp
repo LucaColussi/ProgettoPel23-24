@@ -1,5 +1,5 @@
-//#include "../include/trie.hpp"  
-#include "trie.hpp"
+#include "../include/trie.hpp"  
+//#include "trie.hpp"
 
     template <typename T>
     trie<T>::trie(){ // costruttore
@@ -506,7 +506,7 @@
     
     template <typename T>
    trie<T>::const_leaf_iterator::operator trie<T>::const_node_iterator() const{
-        return node_iterator(this->m_ptr);
+        return const_node_iterator(this->m_ptr);
     }
     
     template <typename T>
@@ -609,3 +609,30 @@
         printTrie(stream, root);
         return stream;
     }
+
+    template <typename T>
+     void trie<T>::path_compress() {
+        trie<T> * tmp = this;
+        if(tmp->get_children().getSize() == 0){
+            return;
+        }
+
+        if(tmp->get_children().getSize() == 1){
+            if(tmp->get_parent() == nullptr){
+                return;
+            }
+            trie<T> node = *tmp->get_children().get(0);       // creo una nuova trie uguale al primo e unico figlio
+            T label = *tmp->get_label() + *node.get_label();  // mergio le due label
+            node.set_parent(tmp->get_parent());               // setto il parent del vecchio nodo alla trie
+            *tmp = node;
+            tmp->set_label(&label);
+            tmp->get_parent()->get_children().reorder();
+            tmp->path_compress();
+        }
+
+        else{
+            for(auto it = tmp->get_children().begin(); it != tmp->get_children().end(); it++){
+                it->path_compress();
+            }
+        }
+     }

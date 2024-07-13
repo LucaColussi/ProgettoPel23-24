@@ -142,6 +142,11 @@ public:
         }
     }
     
+       void reorder() {
+        std::sort(children.begin(), children.end(), [](const trie<T>* a, const trie<T>* b) {
+            return *a->get_label() < *b->get_label();
+        });
+    }
     
     struct children_iterator {
         using iterator_category = std::forward_iterator_tag;

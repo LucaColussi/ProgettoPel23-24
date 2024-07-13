@@ -147,7 +147,7 @@ struct trie {
     // trie<T>& operator+=(trie<T> const&);
 
     // /* facultative: path compression */
-    // void path_compress();
+     void path_compress();
 
 private:
     trie<T>* m_p;      // parent

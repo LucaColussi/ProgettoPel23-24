@@ -493,6 +493,45 @@ void test_ostream() {
    }
 }
 
+void test_path_compression() {
+   try {
+      trie<string> t = load_trie<string>("compression/trie_string1.tr");
+      trie<string> expectedResult =
+      load_trie<string>("compression/result_1.tr");
+      t.path_compress();
+      assert(expectedResult == t);
+
+      trie<int> t2 = load_trie<int>("compression/trie_int2.tr");
+      trie<int> expectedResult2 = load_trie<int>("compression/result_2.tr");
+      t2.path_compress();
+      assert(expectedResult2 == t2);
+
+      t2 = load_trie<int>("compression/trie_int3.tr");
+      expectedResult2 = load_trie<int>("compression/result_3.tr");
+      t2.path_compress();
+      assert(expectedResult2 == t2);
+
+      t2 = load_trie<int>("compression/trie_int4.tr");
+      expectedResult2 = load_trie<int>("compression/result_4.tr");
+      t2.path_compress();
+      assert(expectedResult2 == t2);
+
+      t2 = load_trie<int>("compression/trie_int5.tr");
+      expectedResult2 = load_trie<int>("compression/result_5.tr");
+      t2.path_compress();
+      assert(expectedResult2 == t2);
+
+      t2 = load_trie<int>("compression/trie_int6.tr");
+      expectedResult2 = load_trie<int>("compression/result_6.tr");
+      t2.path_compress();
+      assert(expectedResult2 == t2);
+
+   } catch (const parser_exception& e) {
+      cout << e.what() << endl;
+      assert(false);
+   }
+}
+
 int main(){
     test_bag_iterator();
     test_const_bag_iterator();
@@ -504,6 +543,7 @@ int main(){
     test_parsing_validation();
     test_max_function();
     test_ostream();
+    test_path_compression();
     // testOperatorEqual();
     // tryEdgeCases();
     // testAddChild();
