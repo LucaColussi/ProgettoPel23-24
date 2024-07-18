@@ -486,7 +486,7 @@ void test_max_function() {
 void test_ostream() {
    try {
       trie<char> t = load_trie<char>("trie_char1.tr");
-      cout << t;
+      //cout << t;
    } catch (const parser_exception& e) {
       cout << e.what() << endl;
       assert(false);
@@ -532,6 +532,81 @@ void test_path_compression() {
    }
 }
 
+void test_trie_sum() {
+   try {
+      /* First test */
+      trie<char> t1 = load_trie<char>("sum/trie_01.tr");
+      trie<char> t2 = load_trie<char>("sum/trie_02.tr");
+      trie<char> expectedResult = load_trie<char>("sum/result_0.tr");
+      trie<char> actualResult = t1 + t2;
+      assert(expectedResult == actualResult);
+
+      t1 = load_trie<char>("sum/trie_11.tr");
+      t2 = load_trie<char>("sum/trie_12.tr");
+      expectedResult = load_trie<char>("sum/result_1.tr");
+      assert(expectedResult == t1 + t2);
+
+      t1 = load_trie<char>("sum/trie_21.tr");
+      t2 = load_trie<char>("sum/trie_22.tr");
+      expectedResult = load_trie<char>("sum/result_2.tr");
+      assert(expectedResult == t1 + t2);
+
+      t1 += t2;
+      assert(expectedResult == t1);
+
+      t1 = load_trie<char>("sum/trie_31.tr");
+      t2 = load_trie<char>("sum/trie_32.tr");
+      expectedResult = load_trie<char>("sum/result_3.tr");
+      t1 += t2;
+      assert(expectedResult == t1);
+
+      t1 = load_trie<char>("sum/trie_41.tr");
+      t2 = load_trie<char>("sum/trie_42.tr");
+      expectedResult = load_trie<char>("sum/result_4.tr");
+      assert(expectedResult == t1 + t2);
+
+      t1 = load_trie<char>("sum/trie_51.tr");
+      t2 = load_trie<char>("sum/trie_52.tr");
+      expectedResult = load_trie<char>("sum/result_5.tr");
+      assert(expectedResult == t1 + t2);
+
+      t1 = load_trie<char>("sum/trie_61.tr");
+      t2 = load_trie<char>("sum/trie_62.tr");
+      expectedResult = load_trie<char>("sum/result_6.tr");
+      assert(expectedResult == t1 + t2);
+
+      t1 = load_trie<char>("sum/trie_71.tr");
+      t2 = load_trie<char>("sum/trie_72.tr");
+      expectedResult = load_trie<char>("sum/result_7.tr");
+      assert(expectedResult == t1 + t2);
+
+      t1 = load_trie<char>("sum/trie_81.tr");
+      t2 = load_trie<char>("sum/trie_82.tr");
+      expectedResult = load_trie<char>("sum/result_8.tr");
+      assert(expectedResult == t1 + t2);
+
+      t1 = load_trie<char>("sum/trie_91.tr");
+      t2 = load_trie<char>("sum/trie_92.tr");
+      expectedResult = load_trie<char>("sum/result_9.tr");
+      assert(expectedResult == t1 + t2);
+
+      t1 = load_trie<char>("sum/trie_101.tr");
+      t2 = load_trie<char>("sum/trie_102.tr");
+      expectedResult = load_trie<char>("sum/result_10.tr");
+      assert(expectedResult == t1 + t2);
+
+      t1 = load_trie<char>("sum/trie_111.tr");
+      t2 = load_trie<char>("sum/trie_112.tr");
+      expectedResult = load_trie<char>("sum/result_11.tr");
+      assert(expectedResult == t1 + t2);
+
+   } catch (const parser_exception& e) {
+      cout << e.what() << endl;
+      assert(false);
+   }
+}
+
+
 int main(){
     test_bag_iterator();
     test_const_bag_iterator();
@@ -544,6 +619,7 @@ int main(){
     test_max_function();
     test_ostream();
     test_path_compression();
+    test_trie_sum();
     // testOperatorEqual();
     // tryEdgeCases();
     // testAddChild();

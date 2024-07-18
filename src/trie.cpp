@@ -55,13 +55,9 @@
 
     template <typename T>
     void trie<T>::set_weight(double w) {
-        if(this->m_c.getSize() == 0){
         this->m_w = w;  
-        }
-        else{
-            throw parser_exception("Can't set weight cause not a leaf");
-        }
     }
+
     template <typename T>
     double trie<T>::get_weight() const{
         if(this->m_c.getSize() == 0){
@@ -154,7 +150,7 @@
 
     template <typename T>
     bool trie<T>::operator==(trie<T> const& other) const {
-        if(this->m_c == other.m_c && this->m_w == other.m_w){
+        if(this->m_c == other.m_c && abs(this->get_weight() - other.get_weight()) <= 1e-6){
             return true;
         }
         return false;
@@ -629,10 +625,52 @@
             tmp->get_parent()->get_children().reorder();
             tmp->path_compress();
         }
-
         else{
             for(auto it = tmp->get_children().begin(); it != tmp->get_children().end(); it++){
                 it->path_compress();
             }
         }
      }
+
+    template <typename T>
+    void merge(trie<T>& left, trie<T>& right){
+        double leftWeight = left.get_weight();
+        for(auto it = right.get_children().begin(); it != right.get_children().end(); it++){    //scorro figli del right
+            if(left.get_children().getWithLabel(*it->get_label()) == nullptr){  // se la label di right non è presente in left
+                trie<T> node = *it;
+                node.set_parent(&left);
+                if(leftWeight != 0){ //riga sus, potrebbe causare errors
+                    for(auto it = node.begin(); it != node.end(); it++){
+                        it.get_leaf().set_weight(it.get_leaf().get_weight() + leftWeight);
+                    }
+                }
+                left.add_child(node);
+            }
+            else{
+                merge(*left.get_children().getWithLabel(*it->get_label()), *it);    //nel caso sia gia presente la label richiamo merge con i due figli destra sinistra
+            }
+        }
+        
+        if(right.get_children().getSize() == 0){
+            for(auto it = left.begin(); it != left.end(); it++){
+                it.get_leaf().set_weight(it.get_leaf().get_weight() + right.get_weight());
+            }
+        }
+
+    }
+
+    template <typename T>
+    trie<T> trie<T>::operator+(trie<T> const& other) const{
+        trie<T> left = *this;
+        trie<T> right = other;
+        merge(left, right);
+        return left;
+    }
+
+    template <typename T>
+    trie<T>& trie<T>::operator+=(trie<T> const& other){
+        trie<T> right = other;
+        merge(*this, right);
+        return *this;
+    }
+

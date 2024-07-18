@@ -70,7 +70,7 @@ public:
         }
         for(int i = 0; i < (int)this->children.size(); i++){
             if(this->children[i]->get_label() != nullptr && other.children[i]->get_label() != nullptr){ // possibilità di aggiungere piu casistiche nel caso andassero bene le label nullptr, in questo caso anche se entrambe nullptr quindi uguali da FALSE
-                if(this->children[i]->get_weight() != other.children[i]->get_weight() || *this->children[i]->get_label() != *other.children[i]->get_label() || this->children[i]->get_children() != other.children[i]->get_children()){
+                if(abs(this->children[i]->get_weight() - other.children[i]->get_weight()) > 1e-6 || *this->children[i]->get_label() != *other.children[i]->get_label() || this->children[i]->get_children() != other.children[i]->get_children()){
                     return false;
                 }
             }
@@ -142,6 +142,19 @@ public:
         }
     }
     
+void reorder() {
+    for (size_t i = 0; i < children.size() - 1; ++i) {
+        for (size_t j = 0; j < children.size() - 1 - i; ++j) {
+            if (*children[j]->get_label() > *children[j + 1]->get_label()) {
+                trie<T>* temp = children[j];
+                children[j] = children[j + 1];
+                children[j + 1] = temp;
+            }
+        }
+    }
+}
+
+
     
     struct children_iterator {
         using iterator_category = std::forward_iterator_tag;

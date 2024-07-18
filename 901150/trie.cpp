@@ -55,13 +55,9 @@
 
     template <typename T>
     void trie<T>::set_weight(double w) {
-        if(this->m_c.getSize() == 0){
         this->m_w = w;  
-        }
-        else{
-            throw parser_exception("Can't set weight cause not a leaf");
-        }
     }
+
     template <typename T>
     double trie<T>::get_weight() const{
         if(this->m_c.getSize() == 0){
@@ -154,7 +150,7 @@
 
     template <typename T>
     bool trie<T>::operator==(trie<T> const& other) const {
-        if(this->m_c == other.m_c && this->m_w == other.m_w){
+        if(this->m_c == other.m_c && abs(this->get_weight() - other.get_weight()) <= 1e-6){
             return true;
         }
         return false;
@@ -506,7 +502,7 @@
     
     template <typename T>
    trie<T>::const_leaf_iterator::operator trie<T>::const_node_iterator() const{
-        return node_iterator(this->m_ptr);
+        return const_node_iterator(this->m_ptr);
     }
     
     template <typename T>
@@ -609,3 +605,72 @@
         printTrie(stream, root);
         return stream;
     }
+
+    template <typename T>
+     void trie<T>::path_compress() {
+        trie<T> * tmp = this;
+        if(tmp->get_children().getSize() == 0){
+            return;
+        }
+
+        if(tmp->get_children().getSize() == 1){
+            if(tmp->get_parent() == nullptr){
+                return;
+            }
+            trie<T> node = *tmp->get_children().get(0);       // creo una nuova trie uguale al primo e unico figlio
+            T label = *tmp->get_label() + *node.get_label();  // mergio le due label
+            node.set_parent(tmp->get_parent());               // setto il parent del vecchio nodo alla trie
+            *tmp = node;
+            tmp->set_label(&label);
+            tmp->get_parent()->get_children().reorder();
+            tmp->path_compress();
+        }
+        else{
+            for(auto it = tmp->get_children().begin(); it != tmp->get_children().end(); it++){
+                it->path_compress();
+            }
+        }
+     }
+
+    template <typename T>
+    void merge(trie<T>& left, trie<T>& right){
+        double leftWeight = left.get_weight();
+        for(auto it = right.get_children().begin(); it != right.get_children().end(); it++){    //scorro figli del right
+            if(left.get_children().getWithLabel(*it->get_label()) == nullptr){  // se la label di right non è presente in left
+                trie<T> node = *it;
+                node.set_parent(&left);
+                if(leftWeight != 0){ //riga sus, potrebbe causare errors
+                    for(auto it = node.begin(); it != node.end(); it++){
+                        it.get_leaf().set_weight(it.get_leaf().get_weight() + leftWeight);
+                    }
+                }
+                left.add_child(node);
+            }
+            else{
+                merge(*left.get_children().getWithLabel(*it->get_label()), *it);    //nel caso sia gia presente la label richiamo merge con i due figli destra sinistra
+            }
+        }
+        
+        if(right.get_children().getSize() == 0){
+            for(auto it = left.begin(); it != left.end(); it++){
+                it.get_leaf().set_weight(it.get_leaf().get_weight() + right.get_weight());
+            }
+        }
+
+    }
+
+    template <typename T>
+    trie<T> trie<T>::operator+(trie<T> const& other) const{
+        trie<T> left = *this;
+        trie<T> right = other;
+        merge(left, right);
+        return left;
+    }
+
+    template <typename T>
+    trie<T>& trie<T>::operator+=(trie<T> const& other){
+        trie<T> right = other;
+        merge(*this, right);
+        return *this;
+    }
+
